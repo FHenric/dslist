@@ -27,8 +27,7 @@ public class GameService {
     @Transactional(readOnly = true)
     public List<GameMinDTO> findAll() {
         List<Game> result = gameRepository.findAll();
+
         return result.stream().map(GameMinDTO::new).toList(); //transforma o List<Game> em <GameMinDTO>
-
-
     };
 }
