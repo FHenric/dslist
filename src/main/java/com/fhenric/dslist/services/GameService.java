@@ -3,6 +3,7 @@ package com.fhenric.dslist.services;
 import com.fhenric.dslist.dto.GameDTO;
 import com.fhenric.dslist.dto.GameMinDTO;
 import com.fhenric.dslist.entities.Game;
+import com.fhenric.dslist.projections.GameMinProjection;
 import com.fhenric.dslist.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.util.List;
 @Service
 public class GameService {
 
-    @Autowired //Injeção do game repository dentro do service (conectando o service ao repository
+    @Autowired //Injeção do game repository dentro do service (conectando o service ao repository)
     private GameRepository gameRepository;
 
     @Transactional(readOnly = true)
@@ -27,6 +28,13 @@ public class GameService {
     @Transactional(readOnly = true)
     public List<GameMinDTO> findAll() {
         List<Game> result = gameRepository.findAll();
+
+        return result.stream().map(GameMinDTO::new).toList(); //transforma o List<Game> em <GameMinDTO>
+    };
+
+    @Transactional(readOnly = true)
+    public List<GameMinDTO> findByList(Long listId) {
+        List<GameMinProjection> result = gameRepository.searchByList(listId);
 
         return result.stream().map(GameMinDTO::new).toList(); //transforma o List<Game> em <GameMinDTO>
     };
